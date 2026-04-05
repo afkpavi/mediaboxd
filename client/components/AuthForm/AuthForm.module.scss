@@ -1,0 +1,230 @@
+@use "../../app/styles/variables" as vars;
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.75);
+  z-index: 999;
+  backdrop-filter: blur(4px);
+}
+
+.authModal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1000;
+  background-color: vars.$color-background-dark;
+  border-radius: 8px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+  max-width: 450px;
+  width: 90%;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.closeButton {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: none;
+  border: none;
+  color: vars.$color-text-gray;
+  font-size: 2rem;
+  cursor: pointer;
+  line-height: 1;
+  transition: color 0.3s ease;
+  z-index: 1;
+
+  &:hover {
+    color: vars.$color-text-white;
+  }
+}
+
+.authForm {
+  padding: 2.5rem 2rem 2rem;
+}
+
+.title {
+  color: vars.$color-text-white;
+  font-size: 1.8rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+  text-align: center;
+}
+
+.subtitle {
+  color: vars.$color-text-gray;
+  font-size: 0.95rem;
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.formGroup {
+  margin-bottom: 1.5rem;
+
+  label {
+    display: block;
+    color: vars.$color-text-white;
+    font-size: 0.9rem;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+  }
+
+  input {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    background-color: vars.$color-background-medium;
+    border: 2px solid vars.$color-border-dark;
+    border-radius: 6px;
+    color: vars.$color-text-white;
+    font-size: 1rem;
+    outline: none;
+    transition:
+      border-color 0.3s ease,
+      background-color 0.3s ease;
+
+    &::placeholder {
+      color: vars.$color-text-gray;
+    }
+
+    &:focus {
+      border-color: vars.$color-primary;
+      background-color: vars.$color-border-dark;
+    }
+  }
+}
+
+.forgotPassword {
+  text-align: right;
+  margin-bottom: 1.5rem;
+
+  a {
+    color: vars.$color-primary;
+    font-size: 0.9rem;
+    text-decoration: none;
+    transition: color 0.3s ease;
+
+    &:hover {
+      color: vars.$color-primary-hover;
+    }
+  }
+}
+
+.submitButton {
+  width: 100%;
+  padding: 0.9rem;
+  background-color: vars.$color-primary;
+  color: vars.$color-text-white;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background-color 0.3s ease,
+    transform 0.1s ease;
+
+  &:hover {
+    background-color: vars.$color-primary-hover;
+    color: vars.$color-background-medium;
+  }
+
+  &:active {
+    transform: scale(0.98);
+  }
+}
+
+.divider {
+  position: relative;
+  text-align: center;
+  margin: 1.5rem 0;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background-color: vars.$color-border-dark;
+  }
+
+  span {
+    position: relative;
+    background-color: vars.$color-background-dark;
+    padding: 0 1rem;
+    color: vars.$color-text-gray;
+    font-size: 0.9rem;
+  }
+}
+
+.socialAuth {
+  margin-bottom: 1.5rem;
+}
+
+.socialButton {
+  width: 100%;
+  padding: 0.75rem;
+  background-color: transparent;
+  color: vars.$color-text-white;
+  border: 2px solid vars.$color-border-dark;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+
+  &:hover {
+    border-color: vars.$color-text-gray;
+    background-color: vars.$color-background-medium;
+  }
+
+  svg {
+    flex-shrink: 0;
+  }
+}
+
+.toggleForm {
+  text-align: center;
+
+  p {
+    color: vars.$color-text-gray;
+    font-size: 0.95rem;
+
+    button {
+      background: none;
+      border: none;
+      color: vars.$color-primary;
+      font-weight: 600;
+      cursor: pointer;
+      transition: color 0.3s ease;
+
+      &:hover {
+        color: vars.$color-primary-hover;
+        text-decoration: underline;
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .authModal {
+    max-width: 95%;
+  }
+
+  .authForm {
+    padding: 2rem 1.5rem 1.5rem;
+  }
+
+  .title {
+    font-size: 1.5rem;
+  }
+}

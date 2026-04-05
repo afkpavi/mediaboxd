@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
-import Navbar from "@/components/layout/Navbar";
 import "./globals.css";
+import Navbar from "@/components/Navbar/Navbar";
+import Providers from "./providers";
 
 export const metadata: Metadata = {
-  title: "Mediaboxd",
-  description: "Mediaboxd",
+  title: "Vibed",
+  description: "Vibed application",
 };
 
 export default function RootLayout({
@@ -15,8 +16,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <Navbar />
-        {children}
+        <Providers>
+          <Navbar />
+          {children}
+        </Providers>
       </body>
     </html>
   );

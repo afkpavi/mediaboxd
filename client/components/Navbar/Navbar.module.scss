@@ -1,0 +1,92 @@
+@use "../../app/styles/variables" as vars;
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: vars.$color-background-dark;
+  padding: 1rem 2rem;
+  box-shadow: vars.$shadow-navbar;
+}
+
+.logo {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: vars.$color-primary;
+
+  a {
+    color: vars.$color-primary;
+    text-decoration: none;
+    transition: color 0.3s ease;
+
+    &:hover {
+      color: vars.$color-primary-hover;
+    }
+  }
+}
+
+.navRight {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.navLink {
+  color: vars.$color-text-white;
+  text-decoration: none;
+  font-size: 1rem;
+  font-weight: 500;
+  transition: color 0.3s ease;
+
+  &:hover {
+    color: vars.$color-primary;
+    cursor: pointer;
+  }
+}
+
+.searchContainer {
+  position: relative;
+}
+
+.searchInput {
+  padding: 0.6rem 1rem;
+  border: 2px solid vars.$color-border-dark;
+  border-radius: 4px;
+  background-color: vars.$color-background-medium;
+  color: vars.$color-text-white;
+  font-size: 0.95rem;
+  outline: none;
+  width: 280px;
+  transition:
+    border-color 0.3s ease,
+    background-color 0.3s ease;
+
+  &::placeholder {
+    color: vars.$color-text-gray;
+  }
+
+  &:focus {
+    border-color: vars.$color-primary;
+    background-color: vars.$color-border-dark;
+  }
+}
+
+@media (max-width: 768px) {
+  .navbar {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .logo {
+    text-align: center;
+  }
+
+  .navRight {
+    margin-top: 1rem;
+    gap: 1rem;
+  }
+
+  .searchInput {
+    width: 100%;
+  }
+}
