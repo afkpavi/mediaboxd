@@ -16,40 +16,72 @@ type MediaItem = {
   first_air_date?: string;
 };
 
-const tabConfig: Record<ActiveTab, {
-  label: string;
-  heading: string;
-  loadingText: string;
-  emptyText: string;
-  errorText: string;
-}> = {
+type ListType = "now_playing" | "airing_today" | "popular";
+
+const tabConfig = {
   movies: {
     label: "Movies",
-    heading: "Now Playing Movies",
-    loadingText: "Loading movies…",
-    emptyText: "No now playing movies found.",
-    errorText: "Unable to load movies.",
+    listTypes: {
+      now_playing: {
+        label: "Now Playing",
+        heading: "Now Playing Movies",
+        loadingText: "Loading movies…",
+        emptyText: "No now playing movies found.",
+        errorText: "Unable to load movies.",
+      },
+      popular: {
+        label: "Popular",
+        heading: "Popular Movies",
+        loadingText: "Loading popular movies…",
+        emptyText: "No popular movies found.",
+        errorText: "Unable to load movies.",
+      },
+    },
   },
   tv: {
     label: "TV Shows",
-    heading: "TV Airing Today",
-    loadingText: "Loading TV shows…",
-    emptyText: "No TV shows available right now.",
-    errorText: "Unable to load TV shows.",
+    listTypes: {
+      airing_today: {
+        label: "Airing Today",
+        heading: "TV Airing Today",
+        loadingText: "Loading TV shows…",
+        emptyText: "No TV shows available right now.",
+        errorText: "Unable to load TV shows.",
+      },
+      popular: {
+        label: "Popular",
+        heading: "Popular TV Shows",
+        loadingText: "Loading popular TV shows…",
+        emptyText: "No popular TV shows available right now.",
+        errorText: "Unable to load TV shows.",
+      },
+    },
   },
-};
+} as const;
 
 export default function Home() {
   const [activeTab, setActiveTab] = useState<ActiveTab>("movies");
-  const moviesQuery = useGetMediaListQuery({ resource: "movie", listType: "now_playing" });
-  const tvQuery = useGetMediaListQuery({ resource: "tv", listType: "airing_today" });
+  const [activeListType, setActiveListType] = useState<{
+    movies: "now_playing" | "popular";
+    tv: "airing_today" | "popular";
+  }>({
+    movies: "now_playing",
+    tv: "airing_today",
+  });
 
-  const activeQuery = activeTab === "movies" ? moviesQuery : tvQuery;
-  const activeItems: MediaItem[] = activeTab === "movies"
-    ? moviesQuery.data?.results ?? []
-    : tvQuery.data?.results ?? [];
+  const currentListType = activeTab === "movies" ? activeListType.movies : activeListType.tv;
+  const activeQuery = useGetMediaListQuery({
+    resource: activeTab === "movies" ? "movie" : "tv",
+    listType: currentListType,
+  });
 
-  const config = tabConfig[activeTab];
+  const activeItems: MediaItem[] = activeQuery.data?.results ?? [];
+  const config = activeTab === "movies"
+    ? tabConfig.movies.listTypes[activeListType.movies]
+    : tabConfig.tv.listTypes[activeListType.tv];
+  const availableListTypes = activeTab === "movies"
+    ? tabConfig.movies.listTypes
+    : tabConfig.tv.listTypes;
   const isLoading = activeQuery.isLoading;
   const hasError = Boolean(activeQuery.error);
 
@@ -58,22 +90,44 @@ export default function Home() {
       <div className={styles.headerRow}>
         <h1 className={styles.title}>Trending Now</h1>
 
-        <div className={styles.toggleGroup}>
-          <span
-            className={styles.toggleSlider}
-            style={{ transform: activeTab === "movies" ? "translateX(0)" : "translateX(100%)" }}
-          />
+        <div className={styles.controls}>
+          <div className={styles.toggleGroup}>
+            <span
+              className={styles.toggleSlider}
+              style={{ transform: activeTab === "movies" ? "translateX(0)" : "translateX(100%)" }}
+            />
 
-          {(["movies", "tv"] as ActiveTab[]).map((tab) => (
-            <button
-              key={tab}
-              type="button"
-              className={`${styles.toggleButton} ${activeTab === tab ? styles.active : ""}`}
-              onClick={() => setActiveTab(tab)}
-            >
-              {tabConfig[tab].label}
-            </button>
-          ))}
+            {(["movies", "tv"] as ActiveTab[]).map((tab) => (
+              <button
+                key={tab}
+                type="button"
+                className={`${styles.toggleButton} ${activeTab === tab ? styles.active : ""}`}
+                onClick={() => setActiveTab(tab)}
+              >
+                {tabConfig[tab].label}
+              </button>
+            ))}
+          </div>
+
+          <div className={styles.filterGroup}>
+            <span
+              className={styles.filterSlider}
+              style={{ transform: currentListType === "popular" ? "translateX(100%)" : "translateX(0)" }}
+            />
+            {Object.entries(availableListTypes).map(([listType, listInfo]) => (
+              <button
+                key={listType}
+                type="button"
+                className={`${styles.toggleButton} ${currentListType === listType ? styles.active : ""}`}
+                onClick={() => setActiveListType((prev) => ({
+                  ...prev,
+                  [activeTab]: listType as typeof prev[typeof activeTab],
+                }))}
+              >
+                {listInfo.label}
+              </button>
+            ))}
+          </div>
         </div>
       </div>
 
