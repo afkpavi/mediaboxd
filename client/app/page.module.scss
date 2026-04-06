@@ -1,0 +1,20 @@
+.main {
+  padding: 3rem 1.5rem;
+}
+
+.title {
+  margin: 0 0 1.5rem;
+  font-size: clamp(2rem, 3vw, 3rem);
+  color: #f8fafc;
+}
+
+.movieGrid {
+  display: grid;
+  gap: 1.25rem;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+}
+
+.message {
+  color: rgba(248, 250, 252, 0.9);
+  font-size: 1rem;
+}
